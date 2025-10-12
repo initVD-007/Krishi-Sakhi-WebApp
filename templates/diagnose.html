@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Diagnose Disease{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <h2>Diagnose Plant Disease</h2>
+    <p>Upload a clear photo of a plant leaf. Our AI will analyze it for diseases.</p>
+    
+    <img id="imagePreview" src="#" alt="Your image preview" class="image-preview"/>
+    
+    <form action="/diagnose" method="post" enctype="multipart/form-data" style="text-align: center;">
+        <input type="file" name="image" id="imageUpload" required>
+        <button type="submit">Diagnose</button>
+    </form>
+
+    {% if prediction_text %}
+    <div id="result">
+        <h3>Result:</h3>
+        <p>{{ prediction_text }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

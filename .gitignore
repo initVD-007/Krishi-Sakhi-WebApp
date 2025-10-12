@@ -1,0 +1,9 @@
+# Virtual Environment
+venv/
+
+# Database file
+farmers.db
+
+# Python cache
+__pycache__/
+*.pyc

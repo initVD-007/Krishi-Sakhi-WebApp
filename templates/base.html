@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Krishi Sakhi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header class="app-header">
+        <h1><a href="/">🌿 KRISHI <b>SAKSHI</b></a></h1>
+        {% if session.phone %}
+        <nav>
+            <a href="/diagnose">Diagnose</a>
+            <a href="/ask">Ask Expert</a>
+            <a href="/my_farm">My Farm</a>
+            <a href="/activity_log">Activity Log</a>
+            <a href="/logout">Logout</a>
+        </nav>
+        {% endif %}
+    </header>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="app-footer">
+        
+    </footer>
+
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

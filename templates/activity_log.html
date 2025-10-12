@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Activity Log{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <style>
+        .activity { border-bottom: 1px solid var(--border-color); padding: 1.5rem 0; }
+        .activity:last-child { border-bottom: none; }
+        .activity-meta { font-size: 0.9em; color: var(--light-text); margin-bottom: 0.5rem; display: block; }
+        .activity b { color: var(--dark-text); }
+        .activity div { white-space: pre-wrap; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <h2>📖 My Activity Log</h2>
+    <p>A complete history of all your interactions with Krishi Sakhi.</p>
+    <hr>
+    {% for activity in activities %}
+        <div class="activity">
+            <span class="activity-meta">{{ activity[0] }} | Type: {{ activity[1] }}</span>
+            <p><b>Your Input:</b> {{ activity[2] }}</p>
+            <p><b>AI Response:</b></p>
+            <div>{{ activity[3] }}</div>
+        </div>
+    {% else %}
+        <p>You have no activities yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

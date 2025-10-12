@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-text">
+        <h2>Welcome, {{ session.name }}!</h2>
+        <p>Your AI-powered farming companion. Use our tools below to get instant advice and keep track of your farm.</p>
+    </div>
+    <div class="hero-3d">
+        <canvas id="hero-canvas"></canvas>
+    </div>
+</div>
+
+<div class="dashboard">
+    <a href="/diagnose" class="dashboard-card">
+        <h3>Diagnose Disease</h3>
+        <p>Upload a photo of a plant leaf to identify diseases.</p>
+    </a>
+    <a href="/ask" class="dashboard-card">
+        <h3>Ask an Expert</h3>
+        <p>Ask any farming-related question and get an instant answer from our AI.</p>
+    </a>
+    <a href="/my_farm" class="dashboard-card">
+        <h3>My Farm & Schedule</h3>
+        <p>View your farm profile and manage crop schedules and reminders.</p>
+    </a>
+    <a href="/activity_log" class="dashboard-card">
+        <h3>Activity Log</h3>
+        <p>See a history of all your past diagnoses and questions.</p>
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Krishi Sakhi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="login-body">
+    <div class="form-container">
+        <h1>Create Your Account</h1>
+        <form method="post">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="tel" name="phone" placeholder="Your Phone Number" required>
+            <input type="text" name="location" placeholder="Your Location (e.g., Thrissur)" required>
+            <input type="text" name="crop" placeholder="Your Main Crop (e.g., Banana)" required>
+            <input type="number" step="0.1" name="land_size" placeholder="Land Size (in acres)" required>
+            <input type="text" name="soil_type" placeholder="Soil Type (e.g., Alluvial)" required>
+            <input type="text" name="irrigation" placeholder="Irrigation Method (e.g., Drip)" required>
+            <button type="submit">Register</button>
+        </form>
+        {% if error %}
+            <p class="error-text">{{ error }}</p>
+        {% endif %}
+        <p class="form-footer">Already have an account? <a href="/login">Login here</a></p>
+    </div>
+</body>
+</html>

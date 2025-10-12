@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Ask an Expert{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <h2>Ask an Expert</h2>
+    <p>Type your farming-related question below, or use the microphone to ask in Malayalam.</p>
+    
+    <form action="/ask" method="post">
+        <textarea name="question" id="questionText" rows="5" placeholder="e.g., Which fertilizer is best for bananas during the monsoon?"></textarea>
+        <div style="display: flex; gap: 10px; margin-top: 1rem;">
+            <button type="submit" style="flex-grow: 1;">Get Answer</button>
+            <button type="button" id="micButton" style="width: 60px; flex-grow: 0;">🎤</button>
+        </div>
+    </form>
+    
+    {% if llm_answer %}
+    <div id="llm_answer">
+        <h3>Expert Answer:</h3>
+        <p>{{ llm_answer }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

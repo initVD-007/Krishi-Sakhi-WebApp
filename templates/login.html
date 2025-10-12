@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Krishi Sakhi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="login-body">
+    <div class="form-container">
+        <h1>🌿 Krishi Sakhi</h1>
+        <p>Your AI-powered farming companion.</p>
+        <hr>
+        <form method="post">
+            <input type="tel" name="phone" placeholder="Enter Your Phone Number" required>
+            <button type="submit">Login</button>
+        </form>
+        {% if error %}
+            <p class="error-text">{{ error }}</p>
+        {% endif %}
+        <p class="form-footer">Don't have an account? <a href="/register">Register here</a></p>
+    </div>
+</body>
+</html>

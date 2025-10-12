@@ -1,0 +1,40 @@
+.login-body {
+    background-image: url('../img/farm_background.jpg');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.form-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 2.5rem; 
+    border-radius: 15px; 
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    /* --- TRANSITION ADDED --- */
+    transition: all 0.3s ease-in-out;
+}
+
+/* --- HOVER EFFECT ADDED --- */
+.form-container:hover {
+    transform: translateY(-10px); /* Lifts the card up */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2); /* Makes the shadow more pronounced */
+}
+
+.form-container hr {
+    margin: 1rem 0;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+}
+.form-container p {
+    color: var(--light-text);
+}
+.form-footer {
+    margin-top: 1.5rem;
+}

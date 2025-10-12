@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}My Farm{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <style>
+        .profile-grid { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); text-align: left; }
+        th { background-color: #f9f9f9; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <h2>🚜 My Farm Dashboard</h2>
+    <div class="profile-grid">
+        <strong>Name:</strong>         <span>{{ session.name }}</span>
+        <strong>Phone:</strong>        <span>{{ session.phone }}</span>
+        <strong>Location:</strong>     <span>{{ session.location }}</span>
+        <strong>Main Crop:</strong>    <span>{{ session.crop }}</span>
+        <strong>Land Size:</strong>    <span>{{ session.land_size }} acres</span>
+        <strong>Soil Type:</strong>    <span>{{ session.soil_type }}</span>
+        <strong>Irrigation:</strong>   <span>{{ session.irrigation }}</span>
+    </div>
+</div>
+
+<div class="content-card">
+    <h2>Log Crop Sowing Date</h2>
+    <form action="/my_farm" method="post">
+        <select name="crop" required>
+            <option value="Rice">Rice</option>
+            <option value="Tomato">Tomato</option>
+            <option value="Banana">Banana</option>
+            <option value="Potato">Potato</option>
+        </select>
+        <input type="date" name="sowing_date" required>
+        <button type="submit" style="width: auto; padding: 10px 15px;">Save Sowing Date</button>
+    </form>
+</div>
+
+{% for crop, schedule in schedules.items() %}
+<div class="content-card">
+    <h2>Schedule for {{ crop }}</h2>
+    <table>
+        <thead><tr><th>Activity</th><th>Scheduled Date</th></tr></thead>
+        <tbody>
+            {% for item in schedule %}
+            <tr><td>{{ item.activity }}</td><td>{{ item.date }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+{% endblock %}
