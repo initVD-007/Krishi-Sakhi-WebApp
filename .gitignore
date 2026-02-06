@@ -1,9 +1,26 @@
-# Virtual Environment
-venv/
-
-# Database file
-farmers.db
-
-# Python cache
+# Python
 __pycache__/
 *.pyc
+
+# Virtual Environments
+venv/
+venv_gpu/
+env/
+
+# Environment Variables
+.env
+
+# Data
+data/dataset/
+data/database/
+# Keep models if they aren't too huge, but often better to ignore
+# data/models/*.h5
+# data/models/*.keras
+# We will keep the tflite model as it's the output artifact
+
+# Large Archive
+archive.zip
+
+# IDEs
+.vscode/
+.idea/

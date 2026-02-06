@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Sakhi - Project Workflow</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --light-green: #e8f5e9;
+            --border-color: #dce1e6;
+            --line-color: #a0a0a0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .node {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 20px;
+            min-width: 250px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .terminator {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            border: none;
+        }
+
+        .decision {
+            padding: 40px;
+            transform: rotate(45deg);
+            min-width: 100px;
+        }
+
+        .decision span {
+            transform: rotate(-45deg);
+            display: block;
+        }
+
+        .arrow {
+            width: 2px;
+            background-color: var(--line-color);
+            height: 30px;
+            position: relative;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 10px solid var(--line-color);
+        }
+
+        .split-container {
+            display: flex;
+            justify-content: center;
+            width: 700px;
+            /* Width of the split section */
+            position: relative;
+        }
+
+        .split-path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+        }
+
+        .path-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        /* Horizontal line connecting the split */
+        .split-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background-color: var(--line-color);
+        }
+
+        /* Vertical lines dropping from the horizontal line */
+        .split-path::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 15px;
+            background-color: var(--line-color);
+        }
+
+        /* Connector for the bottom convergence */
+        .connector {
+            width: 50%;
+            height: 30px;
+            position: relative;
+            border: 2px solid var(--line-color);
+            border-top: none;
+            border-right: none;
+        }
+
+        .connector.right {
+            border-left: none;
+            border-right: 2px solid var(--line-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flowchart">
+        <div class="node terminator">Start: Farmer Wants Diagnosis</div>
+        <div class="arrow"></div>
+        <div class="node">User Uploads Leaf Image</div>
+        <div class="arrow"></div>
+        <div class="node">Image Sent to Server & Preprocessed</div>
+        <div class="arrow"></div>
+        <div class="node">Run TensorFlow Lite (Vision Model)</div>
+        <div class="arrow"></div>
+        <div class="node decision"><span>Is Confidence<br>&gt; 50%?</span></div>
+        <div style="height: 15px;"></div>
+
+        <div class="split-container">
+            <div class="split-path">
+                <div class="path-label">YES</div>
+                <div class="arrow"></div>
+                <div class="node">Get Disease Name</div>
+                <div class="arrow"></div>
+                <div class="node">Call Gemini API for Cure</div>
+            </div>
+            <div class="split-path">
+                <div class="path-label">NO</div>
+                <div class="arrow"></div>
+                <div class="node">Prepare "Unknown" Message</div>
+            </div>
+        </div>
+
+        <div style="display: flex; width: 350px;">
+            <div class="connector left"></div>
+            <div class="connector right"></div>
+        </div>
+        <div class="arrow"></div>
+
+        <div class="node">Display Diagnosis & Cure on Webpage</div>
+        <div class="arrow"></div>
+        <div class="node terminator">End: User Receives Advice</div>
+    </div>
+</body>
+
+</html>

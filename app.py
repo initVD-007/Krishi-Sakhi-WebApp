@@ -184,6 +184,7 @@ def logout():
 @app.route('/diagnose', methods=['GET', 'POST'])
 def diagnose():
     if 'phone' not in session: return redirect(url_for('login'))
+    
     if request.method == 'POST':
         file = request.files.get('image')
         if not file or file.filename == '':
@@ -199,20 +200,36 @@ def diagnose():
         max_prob = probabilities[max_index]
         
         CONFIDENCE_THRESHOLD = 0.5
-        if max_prob > CONFIDENCE_THRESHOLD:
-            prediction = labels[max_index].replace("___", " ").replace("_", " ")
-            result_text = f"Diagnosis: {prediction} ({max_prob:.2%})"
-        else:
-            result_text = "Unknown or Not a Plant Leaf"
-
-        conn = sqlite3.connect(DB_NAME)
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO activities (farmer_phone, activity_type, content, response) VALUES (?, ?, ?, ?)",
-                       (session['phone'], 'Diagnosis', file.filename, result_text))
-        conn.commit()
-        conn.close()
+        prediction_text = ""
+        care_instructions = None
         
-        return render_template('diagnose.html', prediction_text=result_text)
+        if max_prob > CONFIDENCE_THRESHOLD:
+            predicted_label = labels[max_index]
+            disease_name = predicted_label.replace("___", " ").replace("_", " ")
+            prediction_text = f"Diagnosis: {disease_name} ({max_prob:.2%})"
+
+            if llm_model:
+                try:
+                    prompt = f"Provide a clear, step-by-step list of care instructions to treat the plant disease '{disease_name}'. Include both organic and chemical treatment options if available."
+                    response = llm_model.generate_content(prompt)
+                    care_instructions = response.text
+                except Exception as e:
+                    print(f"Gemini Care Instructions Error: {e}")
+                    care_instructions = "Could not fetch care instructions from the AI assistant at this time."
+            else:
+                care_instructions = "AI assistant is not configured. Cannot fetch care instructions."
+
+            conn = sqlite3.connect(DB_NAME)
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO activities (farmer_phone, activity_type, content, response) VALUES (?, ?, ?, ?)",
+                           (session['phone'], 'Diagnosis', file.filename, prediction_text))
+            conn.commit()
+            conn.close()
+        else:
+            prediction_text = "Unknown or Not a Plant Leaf"
+        
+        return render_template('diagnose.html', prediction_text=prediction_text, care_instructions=care_instructions)
+
     return render_template('diagnose.html')
 
 @app.route('/ask', methods=['GET', 'POST'])
@@ -288,66 +305,6 @@ def activity_log():
     conn.close()
     
     return render_template('activity_log.html', activities=activities)
-
-@app.route('/diagnose', methods=['GET', 'POST'])
-def diagnose():
-    if 'phone' not in session: return redirect(url_for('login'))
-    
-    if request.method == 'POST':
-        file = request.files.get('image')
-        if not file or file.filename == '':
-            return render_template('diagnose.html', prediction_text='No image selected.')
-        
-        # --- Vision Model Prediction (No Changes Here) ---
-        img_bytes = file.read()
-        processed_image = process_image(img_bytes)
-        interpreter.set_tensor(input_details[0]['index'], processed_image)
-        interpreter.invoke()
-        output_data = interpreter.get_tensor(output_details[0]['index'])
-        probabilities = output_data[0]
-        max_index = np.argmax(probabilities)
-        max_prob = probabilities[max_index]
-        
-        CONFIDENCE_THRESHOLD = 0.5
-        prediction_text = ""
-        care_instructions = None
-        
-        if max_prob > CONFIDENCE_THRESHOLD:
-            predicted_label = labels[max_index]
-            disease_name = predicted_label.replace("___", " ").replace("_", " ")
-            prediction_text = f"Diagnosis: {disease_name} ({max_prob:.2%})"
-
-            # --- NEW: Use AI to get care instructions ---
-            if llm_model:
-                try:
-                    # Create a specific prompt for the Gemini LLM
-                    prompt = f"""
-                    You are an expert agricultural assistant. A farmer has identified the plant disease '{disease_name}'.
-                    Provide a clear, step-by-step list of care instructions to treat this disease.
-                    Include both organic and chemical treatment options if available.
-                    Format the response for easy reading.
-                    """
-                    response = llm_model.generate_content(prompt)
-                    care_instructions = response.text
-                except Exception as e:
-                    print(f"Gemini Care Instructions Error: {e}")
-                    care_instructions = "Could not fetch care instructions from the AI assistant at this time."
-            else:
-                care_instructions = "AI assistant is not configured. Cannot fetch care instructions."
-
-            # Log the activity
-            conn = sqlite3.connect(DB_NAME)
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO activities (farmer_phone, activity_type, content, response) VALUES (?, ?, ?, ?)",
-                           (session['phone'], 'Diagnosis', file.filename, prediction_text))
-            conn.commit()
-            conn.close()
-        else:
-            prediction_text = "Unknown or Not a Plant Leaf"
-        
-        return render_template('diagnose.html', prediction_text=prediction_text, care_instructions=care_instructions)
-
-    return render_template('diagnose.html')
 
 @app.route('/get_advisory', methods=['POST'])
 def get_advisory():

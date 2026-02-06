@@ -23,5 +23,5 @@ Expected Impact
 
 This solution aims to create a “Krishi Sakhi”—a digital friend who walks with the farmer throughout the crop cycle. The fund availability is subject to availability through government sanction.
 
-API='AIzaSyCIy7Op_2gd-ZFU4ZZ4TB7NFf1O5AmpP1I'
-AIzaSyDKdv4VM5WIax2XGM-UZpH9OvOQRQNZ9mU
+WEATHER_API_KEY = 'b7436ed9d1c47754b0e419a769bad447'
+GEMINI_API_KEY = 'AIzaSyCNHUrskqEpzCdqf5Lmt_z54gds6Hb9Uqk'
