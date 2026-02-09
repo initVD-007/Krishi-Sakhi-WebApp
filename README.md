@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌿 Krishi Sakshi (कृषि साक्षी)
+# 🌿 Krishi Sakshi ("कृषि साक्षी")
 ### SIH 2025 - Smart India Hackathon
 
 **An AI-powered digital companion for farmers, providing instant, context-aware agricultural advice.**
@@ -105,3 +105,4 @@ Follow these steps to set up and run the project on your local machine.
 Made with ❤️ for **Smart India Hackathon 2025**
 
 </div>
+
